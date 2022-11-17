@@ -30,4 +30,5 @@ if __name__ == '__main__':
     mqtt_pub = MqttPublisher()
     mqtt_pub.publish(1)
     time.sleep(3)
+    print("publishing 0")
     mqtt_pub.publish(0)
