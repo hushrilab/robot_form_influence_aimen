@@ -43,7 +43,9 @@ class TalosGl(object):
 
 		group_name_gl = "both_arms_torso"
 		self.move_group_gl = moveit_commander.MoveGroupCommander(group_name_gl,wait_for_servers=10.)
-		self.move_group_gl.set_planning_time(const.PLANNING_TIME)
+		#self.move_group_gl = moveit_commander.MoveGroupCommander(group_name_gl)
+		
+                self.move_group_gl.set_planning_time(const.PLANNING_TIME)
 		self.move_group_gl.set_num_planning_attempts(const.PLANNING_ATTEMPTS)
 
 		group_name_head = "head"

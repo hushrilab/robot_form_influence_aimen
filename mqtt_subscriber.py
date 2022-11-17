@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
+=======
+#!/usr/bin/env python
+>>>>>>> talos/master
 
 #----------------------------------------------------------------------------
 # Created By  : Julie Pivin-Bachler

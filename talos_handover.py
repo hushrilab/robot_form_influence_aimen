@@ -12,6 +12,7 @@ import sys
 import rospy
 import moveit_commander
 import moveit_msgs.msg
+import moveit_msgs.srv
 import geometry_msgs.msg
 import numpy as np
 from std_msgs.msg import String, Duration
@@ -27,7 +28,7 @@ from talos_gl import TalosGl
 from ungrasp_button import UngraspButton
 from publisher_ee_state import PublisherEeState
 from collect_data_talos import CollectDataTalos
-from mqtt_publisher import MqttPublisher
+#from mqtt_publisher import MqttPublisher
 import threading
 import os
 import shlex, subprocess
@@ -64,10 +65,11 @@ class TalosHandOver(TalosGl):
 		self.eef_link = eef_link
 
 		self.joints_right_relax = []
-		right = self.move_group.get_named_target_values(const.RELAX_POS[0])
-		for i in range(7):
-			self.joints_right_relax.append(right.get("arm_right_" + str(i+1) + "_joint"))
-		
+		#right = self.move_group.get_named_target_values(const.RELAX_POS[0])
+		#for i in range(7):
+		#	self.joints_right_relax.append(right.get("arm_right_" + str(i+1) + "_joint"))
+		self.joints_right_relax = [0.0, -0.15, 0.4, -0.7, 0.0, 0.0, 0.0]
+	
 		self.change = False
 		self.nb = 120
 		self.l_forces = []
@@ -89,7 +91,7 @@ class TalosHandOver(TalosGl):
 		t1.start()
 
 		# Initialization of the mqtt publisher for the recording of the cameras
-		self.mqtt_pub = MqttPublisher()
+		# self.mqtt_pub = MqttPublisher()
 
 		rospy.on_shutdown(self.clean_shutdown)
 
@@ -199,20 +201,21 @@ class TalosHandOver(TalosGl):
 		joint_cmd[17] = 0.1
 		self.execute_joints_cmd(self.move_group_gl_head, joint_cmd, "move_right_to_switch_turn_head")
 
-		#UNCOMMENT FOR LISTENNER INPUT - APPLY FORCES AND ALL
-		#self.change = False
-		#self.baseline = 0.0
-		#self.l_forces = []
-		#self.listener()
-		#UNGRASP OBJECT WHEN USER HAS IT
-		#while self.change == False:
-		#	self.idle()
+		# UNCOMMENT FOR LISTENNER INPUT - APPLY FORCES AND ALL
+		# self.change = False
+		# self.baseline = 0.0
+		# self.l_forces = []
+		# self.listener()
+		# #UNGRASP OBJECT WHEN USER HAS IT
+		# while self.change == False:
+		# 	self.idle()
 
-		#self.sub.unregister()
+		# self.sub.unregister()
 		
-		self.ungrasp_button = UngraspButton(self.command_button)
-		self.ungrasp_button.launch()
-
+		#self.ungrasp_button = UngraspButton(self.command_button)
+		#self.ungrasp_button.launch()
+		print("Hint enter when user has grasped object")
+		raw_input()
 		#print "Open gripper ?" #TO CHANGE WITH BUTTON
 		#raw_input()
 
@@ -540,7 +543,7 @@ class TalosHandOver(TalosGl):
 		t2.start()
 
 		# Publish signal to start recording with both cameras simultaneously
-		self.mqtt_pub.publish(1)
+		# self.mqtt_pub.publish(1)
 
 		for obj_to_grasp in self.obj_to_grasp:
 
@@ -580,7 +583,7 @@ class TalosHandOver(TalosGl):
 		# BACK TO INITIAL POSE
 		self.move_initial_pose()
 		# Publish signal to stop the recording of the cameras
-		self.mqtt_pub.publish(0)
+		# self.mqtt_pub.publish(0)
 		# Killing the two threads: data collection of the robot and ros publisher for end effector state
 		self.talos_data_collecter.clean_shutdown()
 		self.pub_ee_state.clean_shutdown()

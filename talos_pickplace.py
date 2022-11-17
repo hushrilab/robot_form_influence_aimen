@@ -27,7 +27,7 @@ from talos_gl import TalosGl
 from publisher_ee_state import PublisherEeState
 from collect_data_talos import CollectDataTalos
 import threading
-from mqtt_publisher import MqttPublisher
+#from mqtt_publisher import MqttPublisher
 #import matplotlib.pyplot as plt
 #from mpl_toolkits.mplot3d import Axes3D
 import os
@@ -74,11 +74,9 @@ class TalosPickPlace(TalosGl):
 		self.joints_right_relax = []
 		self.joints_left_relax = []
 
-		right = self.move_groups[0].get_named_target_values(const.RELAX_POS[0])
-		left = self.move_groups[1].get_named_target_values(const.RELAX_POS[1])
-		for i in range(7):
-			self.joints_right_relax.append(right.get("arm_right_" + str(i+1) + "_joint"))
-			self.joints_left_relax.append(left.get("arm_left_" + str(i+1) + "_joint"))
+		self.joints_right_relax = [0.0, -0.15, 0.4, -0.7, 0.0, 0.0, 0.0]
+		self.joints_left_relax = [ 0.0, 0.15, -0.4, -0.7, 0.0, 0.0, 0.0]
+
 
 		self.const = const
 			
@@ -90,7 +88,7 @@ class TalosPickPlace(TalosGl):
 		t1.start()
 
 		# Initialization of the mqtt publisher for the recording of the cameras
-		self.mqtt_pub = MqttPublisher()
+		# self.mqtt_pub = MqttPublisher()
 
 		rospy.on_shutdown(self.clean_shutdown)
 
@@ -239,7 +237,6 @@ class TalosPickPlace(TalosGl):
 		move_l_group = self.move_l_groups[id_group]
 		eef_link = self.eef_links[id_group]
 		touch_links = self.touch_links_groups[id_group]
-		
 
 		# DETERMINE GRIPPER ORIENTATION
 		quat_obj = self.pose_obj.orientation #base
@@ -577,7 +574,7 @@ class TalosPickPlace(TalosGl):
 		t2.start()
 
 		# Publish signal to start recording with both cameras simultaneously
-		self.mqtt_pub.publish(1) 
+		# self.mqtt_pub.publish(1) 
 
 		for obj_to_grasp in self.obj_to_grasp:
 
@@ -627,7 +624,7 @@ class TalosPickPlace(TalosGl):
 		# BACK TO INITIAL POSE
 		self.move_initial_pose()
 		# Publish signal to stop the recording of the cameras
-		self.mqtt_pub.publish(0)
+		#self.mqtt_pub.publish(0)
 		# Killing the two threads: data collection of the robot and ros publisher for end effector state
 		self.talos_data_collecter.clean_shutdown()
 		self.pub_ee_state.clean_shutdown()
