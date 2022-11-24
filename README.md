@@ -13,8 +13,8 @@ Edited files of the julie/talos_public_ws/src/talos_moveit_config/scripts direct
 
 6. Second terminal: `./restart_deployer.sh; sleep 10; timeout 10 roslaunch talos_controller_configuration position_controllers.launch; roslaunch talos_controller_configuration default_controllers.launch`
 
-7. Third terminal: `./mqtt_subscriber.py 127.0.0.1 /dev/video#
+7. Third terminal: `./mqtt_subscriber.py 127.0.0.1 /dev/video#`
 
-8. Fourth terminal: `./mqtt_subscriber.py 127.0.0.1 /dev/video#
+8. Fourth terminal: `./mqtt_subscriber.py 127.0.0.1 /dev/video#`
 
 9. First terminal: `python talos_pickplace.py` OR `python talos_handover.py`
