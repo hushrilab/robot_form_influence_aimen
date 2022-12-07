@@ -11,7 +11,7 @@ Edited files of the julie/talos_public_ws/src/talos_moveit_config/scripts direct
 
 3. First terminal: `sudo rfcomm 0 00:06:66:BA:D3:82`
 
-4. First terminal: `rfcomm` #check if the shimmer paired
+4. First terminal: `sudo chmod 666 /dev/rfcomm0`
 
 5. First terminal: `ssh pal@talos-4c` (Password: pal)
 
