@@ -9,7 +9,7 @@ Edited files of the julie/talos_public_ws/src/talos_moveit_config/scripts direct
 
 2. First terminal: `hcitool scan` #get Shimmer3-D382 ID (00:06:66:BA:D3:82)
 
-3. First terminal: `sudo rfcomm 0 00:06:66:BA:D3:82`
+3. First terminal: `sudo rfcomm bind 0 00:06:66:BA:D3:82`
 
 4. First terminal: `sudo chmod 666 /dev/rfcomm0`
 
