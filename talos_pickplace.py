@@ -26,6 +26,7 @@ from math import ceil
 from talos_gl import TalosGl
 from publisher_ee_state import PublisherEeState
 from collect_data_talos import CollectDataTalos
+from collect_data_shimmer import CollectDataShimmer
 import threading
 #from mqtt_publisher import MqttPublisher
 #import matplotlib.pyplot as plt
@@ -82,6 +83,7 @@ class TalosPickPlace(TalosGl):
 			
 		self.pub_ee_state = PublisherEeState(self.move_groups[0], self.move_groups[1])
 		self.talos_data_collecter = CollectDataTalos("pickplace")
+		self.shimmer_data_collecter = CollectDataShimmer()
 
 		# Create one thread for publisher
 		t1 = threading.Thread(name="ee", target=self.pub_ee_state.ee_state_talker, args=())
@@ -569,6 +571,8 @@ class TalosPickPlace(TalosGl):
 		self.load_scene()
 		rospy.sleep(2)
 
+		self.shimmer_data_collecter._dump_data()
+
 		# Create one thread for data collecter
 		t2 = threading.Thread(name="talos_data", target=self.talos_data_collecter.activate_thread, args=())
 		t2.start()
@@ -627,12 +631,18 @@ class TalosPickPlace(TalosGl):
 		#self.mqtt_pub.publish(0)
 		# Killing the two threads: data collection of the robot and ros publisher for end effector state
 		self.talos_data_collecter.clean_shutdown()
+		print "Talos data collecter shutdown complete"
+		self.shimmer_data_collecter.clean_shutdown()
+		print "Shimmer data collecter shutdown complete"
 		self.pub_ee_state.clean_shutdown()
+		print "Publisher state shutdown complete"
 	# ========================================================================
 
 	def clean_shutdown(self):
 		self.talos_data_collecter.clean_shutdown()
+		self.shimmer_data_collecter.clean_shutdown()
 		self.pub_ee_state.clean_shutdown()
+
 
 
 
