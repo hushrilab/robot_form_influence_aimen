@@ -28,8 +28,8 @@ from talos_gl import TalosGl
 from ungrasp_button import UngraspButton
 from publisher_ee_state import PublisherEeState
 from collect_data_talos import CollectDataTalos
-from collect_data_shimmer import CollectDataShimmer
-#from mqtt_publisher import MqttPublisher
+#from collect_data_shimmer import CollectDataShimmer
+from mqtt_publisher import MqttPublisher
 import threading
 import os
 import shlex, subprocess
@@ -86,14 +86,14 @@ class TalosHandOver(TalosGl):
 
 		self.pub_ee_state = PublisherEeState(self.move_group, moveit_commander.MoveGroupCommander("left_arm"))
 		self.talos_data_collecter = CollectDataTalos("handover")
-		self.shimmer_data_collecter = CollectDataShimmer()
+#		self.shimmer_data_collecter = CollectDataShimmer()
 
 		# Create one thread for publisher
 		t1 = threading.Thread(name="ee", target=self.pub_ee_state.ee_state_talker, args=())
 		t1.start()
 
 		# Initialization of the mqtt publisher for the recording of the cameras
-		# self.mqtt_pub = MqttPublisher()
+		self.mqtt_pub = MqttPublisher()
 
 		rospy.on_shutdown(self.clean_shutdown)
 
@@ -540,14 +540,14 @@ class TalosHandOver(TalosGl):
 		self.load_scene()
 		rospy.sleep(2)
 
-		self.shimmer_data_collecter._dump_data()
+#		self.shimmer_data_collecter._dump_data()
 
 		# Create one thread for data collecter
 		t2 = threading.Thread(name="talos_data", target=self.talos_data_collecter.activate_thread, args=())
 		t2.start()
 	
 		# Publish signal to start recording with both cameras simultaneously
-		# self.mqtt_pub.publish(1)
+		self.mqtt_pub.publish(1)
 
 		for obj_to_grasp in self.obj_to_grasp:
 
@@ -587,19 +587,19 @@ class TalosHandOver(TalosGl):
 		# BACK TO INITIAL POSE
 		self.move_initial_pose()
 		# Publish signal to stop the recording of the cameras
-		# self.mqtt_pub.publish(0)
+		self.mqtt_pub.publish(0)
 		# Killing the two threads: data collection of the robot and ros publisher for end effector state
 		self.talos_data_collecter.clean_shutdown()
 		print "Talos data collecter shutdown complete"
-		self.shimmer_data_collecter.clean_shutdown()
-		print "Shimmer data collecter shutdown complete"
+#		self.shimmer_data_collecter.clean_shutdown()
+#		print "Shimmer data collecter shutdown complete"
 		self.pub_ee_state.clean_shutdown()
 		print "Publisher state shutdown complete"
 	# ========================================================================
 
 	def clean_shutdown(self):
 		self.talos_data_collecter.clean_shutdown()
-		self.shimmer_data_collecter.clean_shutdown()
+#		self.shimmer_data_collecter.clean_shutdown()
 		self.pub_ee_state.clean_shutdown()
 
 

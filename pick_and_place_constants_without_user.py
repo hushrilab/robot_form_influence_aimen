@@ -111,7 +111,7 @@ OBJ_POS_GRASP = {
 		"roll" : 0.0,
 		"pitch" : 0.0,
 		"yaw" : 0.0,
-		"dim" : (0.04, 0.04, 0.4),
+		"dim" : (0.038, 0.038, 0.4),
 		"translation" : (0.0, 1.5, 0.0)
 	},
 	"object2" : {
@@ -122,7 +122,7 @@ OBJ_POS_GRASP = {
 		"roll" : 0.0,
 		"pitch" : 0.0,
 		"yaw" : 0.0,
-		"dim" : (0.04, 0.04, 0.4),
+		"dim" : (0.038, 0.038, 0.4),
 		"translation" : (0.0, 1.5, 0.0)
 	},
 	"object3" : {
@@ -133,7 +133,7 @@ OBJ_POS_GRASP = {
 		"roll" : 0.0,
 		"pitch" : 0.0,
 		"yaw" : 0.0,
-		"dim" : (0.04, 0.04, 0.4),
+		"dim" : (0.038, 0.038, 0.4),
 		"translation" : (0.0, 1.5, 0.0)
 	}
 	# WITHOUT TORSO LEANING
