@@ -13,27 +13,27 @@ Edited files of the julie/talos_public_ws/src/talos_moveit_config/scripts direct
 #### On Windows
 1. Connect shimmer sensor, make firmware 'logging and streaming' and configure sensor
 
-#### On Ubuntu
-1. Connect to RoboHub wifi
+#### On Labwork6
+1. Plug 2 cameras into computer using USB-3 cords and ports
 
-2. First terminal: `hcitool scan` #get Shimmer3-D382 ID (00:06:66:BA:D3:82)
-
-3. First terminal: `sudo rfcomm bind 0 00:06:66:BA:D3:82`
-
-4. First terminal: `sudo chmod 666 /dev/rfcomm0`
-
-5. First terminal: `ssh pal@talos-4c` (Password: pal)
-
-6. First terminal: `cd aimen_scripts`
-
-7. First terminal: `./fixit.sh` (Password: palroot)
-
-8. Second terminal: `ssh pal@talos-4c` (Password: pal)
-
-9. Second terminal: `./restart_deployer.sh; sleep 10; timeout 10 roslaunch talos_controller_configuration position_controllers.launch; roslaunch talos_controller_configuration default_controllers.launch`
-
-10. Third terminal: `./mqtt_subscriber.py 127.0.0.1 /dev/video#`
-
-11. Fourth terminal: `./mqtt_subscriber.py 127.0.0.1 /dev/video#`
-
-12. First terminal: `python talos_pickplace.py` OR `python talos_handover.py`
+2. Plug bluetooth dongle into Talos
+3. `v4l2-ctl --list-devices` #will give multiple /dev/video# options to find the right ones use next command
+4. `v4l2-ctl -d /dev/video# --list-formats-ext` #go through all options looking for 'YUYV' for both cameras
+5. First terminal: `./mqtt_subscriber.py mqtt.eclipseprojects.io /dev/video#`
+6. Second terminal: `./mqtt_subscriber.py mqtt.eclipseprojects.io /dev/video##`
+7. Lift Talos 1ft off the ground, flip the switch, wait a couple seconds and press top button.
+8. Third terminal: `ssh pal@talos-4c` (Password: pal)
+9. Third terminal: `cd aimen_scripts`
+10. Third terminal: `./fixit.sh` (Password: palroot)
+11. Fourth terminal: `ssh pal@talos-4c` (Password: pal)
+12. Fourth terminal: `./restart_deployer.sh; sleep 10; timeout 10 roslaunch talos_controller_configuration position_controllers.launch; roslaunch talos_controller_configuration default_controllers.launch`
+13. Fifth terminal: `ssh pal@talos-4c` (Password: pal)
+14. Fifth terminal:`sudo bash` (Password: palroot)
+15. Fifth terminal: `sudo apt intall bluez`
+16. Fifth terminal: `bluetoothctl`
+17. Fifth terminal: `power on`
+18. Fifth terminal: `agent on`
+19. Fifth terminal: `pair 00:06:66:BA:D3:82` (Password: 1234)
+20. Fifth terminal: Ctrl+D
+21. Fifth terminal: `rfcomm bind 0 00:06:66:BA:D3:82` #to check if device binded use `rfcomm`, and after running the python scripts each time `rfcomm release 0` and repeat step 21
+22. Third terminal:`python talos_pickplace.py` OR `python talos_handover.py` (Once initialized i.e Talos is in starting position then place Talos on the floor and make sure the crane rope is loose)
