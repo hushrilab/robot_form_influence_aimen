@@ -11,7 +11,7 @@ Edited files of the julie/talos_public_ws/src/talos_moveit_config/scripts direct
 6. Second terminal: `rosrun talos_moveit_config talos_pickplace.py` or `rosrun talos_moveit_config talos_handover.py`
 ### Run the experiments IRL - Pick and place or Handover scenario
 #### On Windows
-1. Connect shimmer sensor, make firmware 'logging and streaming' and configure sensor
+1. Connect shimmer sensor, with Consensys, make firmware 'logging and streaming' and configure sensor, then undock. This step is necessary to align the timestamp of the sensor (otherwise it is not properly timestamped).
 
 #### On Labwork6
 1. Plug 2 cameras into computer using USB-3 cords and ports
@@ -33,7 +33,8 @@ Edited files of the julie/talos_public_ws/src/talos_moveit_config/scripts direct
 16. Fifth terminal: `bluetoothctl`
 17. Fifth terminal: `power on`
 18. Fifth terminal: `agent on`
-19. Fifth terminal: `pair 00:06:66:BA:D3:82` (Password: 1234)
-20. Fifth terminal: Ctrl+D
-21. Fifth terminal: `rfcomm bind 0 00:06:66:BA:D3:82` #to check if device binded use `rfcomm`, and after running the python scripts each time `rfcomm release 0` and repeat step 21
-22. Third terminal:`python talos_pickplace.py` OR `python talos_handover.py` (Once initialized i.e Talos is in starting position then place Talos on the floor and make sure the crane rope is loose)
+19. Firth terminal: `scan on` and verify that`00:06:66:BA:D3:82` is detected
+20. Fifth terminal: `pair 00:06:66:BA:D3:82` (Password: 1234)
+21. Fifth terminal: Ctrl+D
+22. Fifth terminal: `rfcomm bind 0 00:06:66:BA:D3:82` #to check if device binded use `rfcomm`, and after running the python scripts each time `rfcomm release 0` and repeat step 22
+23. Third terminal:`python talos_pickplace.py` OR `python talos_handover.py` (Once initialized i.e Talos is in starting position then place Talos on the floor and make sure the crane rope is loose)
